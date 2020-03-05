@@ -6,7 +6,7 @@
 /*   By: fguedes <fguedes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:23:52 by fguedes           #+#    #+#             */
-/*   Updated: 2020/02/07 22:34:21 by fguedes          ###   ########.fr       */
+/*   Updated: 2020/03/05 19:06:55 by fguedes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static int		count_words(const char *s, char c)
 
 	i = 0;
 	count = 0;
-	while (s[i])
+	while (s[i] != '\0')
 	{
-		while (s[i] == c)
+		while (s[i] == c && s[i] != '\0')
 			i++;
-		if (s[i])
+		if (s[i] != '\0')
 			count++;
-		while (s[i] != c && s[i])
+		while (s[i] != c && s[i] != '\0')
 			i++;
 	}
 	return (count);
@@ -47,10 +47,10 @@ char			**ft_split(char const *s, char c)
 		return (0);
 	while (arr_tab < count_words(s, c))
 	{
-		while (s[start] == c)
+		while (s[start] == c && s[start] != '\0')
 			start++;
 		end = start;
-		while (s[end] != c && s[end])
+		while (s[end] != c && s[end] != '\0')
 			end++;
 		res[arr_tab] = ft_substr(s, start, (end - start));
 		arr_tab++;
