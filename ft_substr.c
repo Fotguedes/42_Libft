@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fguedes <fguedes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/01 23:17:16 by fguedes           #+#    #+#             */
-/*   Updated: 2020/02/07 23:26:39 by fguedes          ###   ########.fr       */
+/*   Created: 2020/05/02 23:51:24 by fguedes           #+#    #+#             */
+/*   Updated: 2020/05/02 23:51:30 by fguedes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,19 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	size;
-	char	*tab;
+	unsigned int	i;
+	char			*str;
+	size_t			s_len;
 
-	if (!s)
+	if (!s || !(str = malloc((len + 1) * sizeof(*str))))
 		return (NULL);
-	size = ft_strlen(s + start);
-	if (size < len)
-		len = size;
-	if (ft_strlen(s) < start)
+	i = 0;
+	s_len = ft_strlen(s);
+	while (i < len && (start + i) < s_len)
 	{
-		if (!(tab = (char *)malloc(1)))
-			return (0);
-		tab[0] = '\0';
-		return (tab);
+		str[i] = s[start + i];
+		i++;
 	}
-	if (!(tab = (char *)malloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	ft_strlcpy(tab, s + start, len + 1);
-	return (tab);
+	str[i] = '\0';
+	return (str);
 }
