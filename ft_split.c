@@ -6,56 +6,81 @@
 /*   By: fguedes <fguedes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 19:23:52 by fguedes           #+#    #+#             */
-/*   Updated: 2020/03/05 19:06:55 by fguedes          ###   ########.fr       */
+/*   Updated: 2020/05/07 16:54:37 by fguedes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		count_words(const char *s, char c)
+static int		countwords(char const *s, char c)
 {
-	unsigned int	i;
-	int				count;
+	int			i;
+	int			word;
+	int			count;
 
 	i = 0;
+	word = 0;
 	count = 0;
-	while (s[i] != '\0')
+	while (s[i])
 	{
-		while (s[i] == c && s[i] != '\0')
-			i++;
-		if (s[i] != '\0')
+		if (s[i] == c)
+			word = 0;
+		else if (s[i] != c && word == 0)
+		{
+			word = 1;
 			count++;
-		while (s[i] != c && s[i] != '\0')
-			i++;
+		}
+		i++;
 	}
 	return (count);
 }
 
+static char		*makeword(char const *s, char c)
+{
+	int			i;
+	char		*word;
+
+	i = 0;
+	while (s[i] && s[i] != c)
+		i++;
+	word = (char *)malloc(i + 1);
+	if (!word)
+		return (NULL);
+	word[i] = 0;
+	i--;
+	while (i >= 0)
+	{
+		word[i] = s[i];
+		i--;
+	}
+	return (word);
+}
+
 char			**ft_split(char const *s, char c)
 {
-	char	**res;
-	int		start;
-	int		end;
-	int		arr_tab;
+	char		**str;
+	int			i;
+	int			word;
+	int			count;
 
-	if (!s || !c)
+	if (!s || !(str = (char **)malloc((countwords(s, c) + 1) * sizeof(char *))))
 		return (NULL);
-	start = 0;
-	end = 0;
-	arr_tab = 0;
-	if (!(res = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1))))
-		return (0);
-	while (arr_tab < count_words(s, c))
+	word = 0;
+	count = 0;
+	i = 0;
+	while (s[i])
 	{
-		while (s[start] == c && s[start] != '\0')
-			start++;
-		end = start;
-		while (s[end] != c && s[end] != '\0')
-			end++;
-		res[arr_tab] = ft_substr(s, start, (end - start));
-		arr_tab++;
-		start = end;
+		if (s[i] == c)
+			word = 0;
+		else if (s[i] != c && word == 0)
+		{
+			word = 1;
+			if (!(str[count] = makeword(&s[i], c)))
+				return (NULL);
+			count++;
+		}
+		i++;
 	}
-	res[arr_tab] = 0;
-	return (res);
+	str[count] = 0;
+	return (str);
 }
